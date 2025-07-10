@@ -215,6 +215,41 @@
             color: white;
             font-weight: 700;
             animation: pulse 2s ease-in-out infinite;
+            overflow: hidden;
+            position: relative;
+            border: 4px solid transparent;
+            background-clip: padding-box;
+        }
+
+        .profile-img::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c);
+            border-radius: 50%;
+            z-index: -1;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .profile-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .profile-img-fallback {
+            font-size: 4rem;
+            color: white;
+            font-weight: 700;
         }
 
         @keyframes pulse {
@@ -789,7 +824,11 @@
         <h2>About Me</h2>
         <div class="about-content">
             <div class="about-image">
-                <div class="profile-img">AP</div>
+                <div class="profile-img">
+                    <img src="aishwary_profile.jpg" alt="Aishwary Pratap Singh" 
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="profile-img-fallback" style="display: none;">AP</div>
+                </div>
             </div>
             <div class="about-text">
                 <p>I'm a passionate Software Engineer with expertise in backend development, AI integration, and scalable system design. Currently working at Hashedin by Deloitte, I specialize in Python, Django, and modern web technologies.</p>
@@ -1041,55 +1080,16 @@
 
         // Resume download function
         function downloadResume() {
-            // Create a dummy PDF content (in real implementation, you'd have an actual PDF file)
-            const resumeContent = `
-# Aishwary Pratap Singh - Resume
-
-## Contact Information
-- Email: aishwarypsingh@gmail.com
-- Phone: +91 9682881898
-- Location: Gurugram, India
-- LinkedIn: [LinkedIn Profile]
-- GitHub: [GitHub Profile]
-
-## Education
-**PSIT, Kanpur** - B.Tech in Computer Science & Engineering
-August 2018 – July 2022
-GPA: 8.4
-
-## Experience
-**Software Engineer - Hashedin by Deloitte** (March 2022 - Present)
-- Optimized application performance by reducing API callback times by up to 40%
-- Integrated Generative AI models into Django-based applications
-- Implemented vector-based semantic search improving efficiency by 60%
-- Enhanced application scalability through threading strategies
-
-## Projects
-**Stock Broker App**
-- Developed order matching engine simulation
-- Tools: Python, Django, Azure Cosmos DB
-
-**Phone Number Lookup API**
-- Built REST API for spam detection
-- Tools: Django, SQLite
-
-## Technical Skills
-- Languages: Python, Java
-- Frameworks: Django, Flask, Spring Boot
-- Databases: MongoDB, PostgreSQL, Redis
-- Technologies: Docker, Azure CI/CD, Langchain, GenAI
-            `;
-
-            // Create a blob and download link
-            const blob = new Blob([resumeContent], { type: 'text/plain' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'Aishwary_Pratap_Singh_Resume.txt';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
+            // Create a download link for the PDF file
+            const link = document.createElement('a');
+            link.href = 'aishwary_resume.pdf';
+            link.download = 'Aishwary_Pratap_Singh_Resume.pdf';
+            link.target = '_blank';
+            
+            // Append to body, click, and remove
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
 
             // Add visual feedback
             const downloadBtn = document.querySelector('.btn-download');
